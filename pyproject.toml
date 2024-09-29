@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "synapse"
+version = "0.1.0"
+description = ""
+authors = ["isa"]
+readme = "README.md"
+packages = [{include = "synapse"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+websockets = "^13.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-asyncio = "^0.24.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
