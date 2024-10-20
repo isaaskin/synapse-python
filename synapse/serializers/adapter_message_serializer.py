@@ -6,21 +6,10 @@ messages. They are used by the `publish` and `subscribe` methods of the adapter
 to convert messages to and from JSON strings.
 
 """
+
 import json
 
-
-class DeserializationError(Exception):
-    """Raised when a message cannot be deserialized."""
-
-    def __init__(self, message: str):
-        super().__init__(message)
-
-
-class SerializationError(Exception):
-    """Raised when a message cannot be serialized."""
-
-    def __init__(self, message: str):
-        super().__init__(message)
+from .errors import DeserializationError, SerializationError
 
 
 def deserialize(message: str) -> dict:

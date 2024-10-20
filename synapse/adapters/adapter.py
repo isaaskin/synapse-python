@@ -45,7 +45,7 @@ class Adapter:
         """
 
         self._logger.info(
-            "Connected as %s",
+            "Connected as a %s",
             "server" if is_server else "client",
         )
         self.__is_server = is_server

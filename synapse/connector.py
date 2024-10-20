@@ -1,6 +1,9 @@
 from logging import Logger
+from typing import Union
 
 from .adapters.adapter import Adapter
+
+PAYLOAD = Union[str, int, float, dict]
 
 
 class Connector:

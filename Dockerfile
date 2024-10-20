@@ -1,3 +1,7 @@
-FROM python:3.9-slim
+FROM debian:bookworm-slim
 
-RUN pip3 install pipx && pipx install poetry && echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.bashrc
+RUN apt update && apt install -y --no-install-recommends \
+    make \
+    python3 \
+    python3-pip \
+    python3-poetry

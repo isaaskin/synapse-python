@@ -70,7 +70,6 @@ class WSAdapter(Adapter):
             ) as websocket:
                 self._update_connection_status(False, True)
                 await self.__on_connection(websocket)
-                self._update_connection_status(False, False)
         except ConnectionRefusedError:
             raise ConnectionError(
                 "Connection refused to %s:%d" % (self.__host, self.__port)
@@ -92,12 +91,13 @@ class WSAdapter(Adapter):
             self._update_connection_status(True, True)
             await asyncio.Future()
 
-    async def publish(self, topic: str, message: str) -> None:
-        await super().publish(topic, message)
+    async def publish(self, topic: str, message: str) -> bool:
+        if not await super().publish(topic, message):
+            return False
 
         if len(self.__connections) == 0:
-            self._logger.warning("No connections connected")
-            return
+            self._logger.warning("No connections found")
+            return False
 
         for connection in self.__connections:
             try:
@@ -127,3 +127,5 @@ class WSAdapter(Adapter):
                     topic,
                     e,
                 )
+
+        return True

@@ -1,5 +1,10 @@
 import asyncio
 
+# Add path to synapse module
+import sys
+
+sys.path.append("../")
+
 from synapse.adapters.tcp_adapter import TCPAdapter
 from synapse.connector_client import ConnectorClient
 
