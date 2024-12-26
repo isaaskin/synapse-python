@@ -23,7 +23,6 @@ connector_server.register_command("hello", handle_command_response)
 
 
 async def send_state():
-    return
     while True:
         await asyncio.sleep(1)
         await connector_server.publish_state("temperature", "23.4")

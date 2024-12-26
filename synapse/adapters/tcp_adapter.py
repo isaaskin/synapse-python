@@ -69,6 +69,8 @@ class TCPAdapter(Adapter):
             self._logger.error("Connection refused to %s:%d", self.__host, self.__port)
             return
 
+        # TODO handle other exceptions
+
     async def create(self):
         if self.is_connected():
             self._log_already_connected()
@@ -85,20 +87,25 @@ class TCPAdapter(Adapter):
         async with server:
             await server.serve_forever()
 
-    async def publish(self, topic: str, message: str) -> None:
-        await super().publish(topic, message)
+    async def publish(self, topic: str, message: str) -> bool:
+        if not await super().publish(topic, message):
+            return False
+
+        try:
+            serialized_message = ams.serialize(topic, message)
+        except ams.SerializationError as e:
+            self._logger.error(
+                "Error while serializing message: %s, topic: %s, Error: %s",
+                message,
+                topic,
+                e,
+            )
+            return False
 
         for writer in self.__writers:
             try:
-                writer.write(f"{ams.serialize(topic, message)}".encode("utf-8"))
+                writer.write(serialized_message.encode("utf-8"))
                 await writer.drain()
-            except ams.SerializationError as e:
-                self._logger.error(
-                    "Error while serializing message: %s, topic: %s, Error: %s",
-                    message,
-                    topic,
-                    e,
-                )
             except Exception as e:
                 self._logger.error(
                     "Error while publishing message: %s, topic: %s, Error: %s",
@@ -106,3 +113,5 @@ class TCPAdapter(Adapter):
                     topic,
                     e,
                 )
+
+        return True

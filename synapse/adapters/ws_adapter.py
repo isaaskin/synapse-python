@@ -95,25 +95,22 @@ class WSAdapter(Adapter):
         if not await super().publish(topic, message):
             return False
 
-        if len(self.__connections) == 0:
-            self._logger.warning("No connections found")
-            return False
+        try:
+            # Serialize the message
+            serialized_message = ams.serialize(topic, message)
+        except ams.SerializationError as e:
+            # Handle serialization errors
+            self._logger.error(
+                "Error while serializing message: %s, topic: %s, Error: %s",
+                message,
+                topic,
+                e,
+            )
 
         for connection in self.__connections:
             try:
-                # Serialize the message
-                serialized_message = ams.serialize(topic, message)
-
                 # Send the message to the client
                 await connection.send(serialized_message)
-            except ams.SerializationError as e:
-                # Handle serialization errors
-                self._logger.error(
-                    "Error while serializing message: %s, topic: %s, Error: %s",
-                    message,
-                    topic,
-                    e,
-                )
             except ConnectionClosedOK:
                 # Handle connection closed errors
                 self._logger.warning(
