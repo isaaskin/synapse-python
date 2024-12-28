@@ -25,7 +25,7 @@ class ConnectorServer(Connector):
             self._logger.error("Failed to serialize state: %s", e)
         else:
             if not await self._adapter.publish(f"state/{name}", serialized_payload):
-                self._logger.warning("Failed to publish state [%s]", name)
+                self._logger.error("Failed to publish state [%s]", name)
 
     async def publish_event(self, name: str, payload: str) -> None:
         self._logger.debug("Publishing event [%s] with payload [%s]", name, payload)

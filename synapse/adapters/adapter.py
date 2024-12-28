@@ -45,9 +45,11 @@ class Adapter:
         """
 
         self._logger.info(
-            "Connected as a %s",
+            "%s as a %s",
+            "Connected" if is_connected else "Disconnected",
             "server" if is_server else "client",
         )
+
         self.__is_server = is_server
         self.__is_connected = is_connected
 
@@ -139,9 +141,9 @@ class Adapter:
         :param message: The message to publish
         :return: True if the message was successfully published, False otherwise
         """
-        
+
         if not self.is_connected():
-            logger.error("Client is not connected")
+            logger.error("Not connected")
             return False
         return True
 
@@ -152,3 +154,20 @@ class Adapter:
         :return: True if the adapter is connected, False otherwise
         """
         return self.__is_connected
+
+    async def close(self) -> None:
+        """
+        Close the adapter.
+
+        Subclasses should override this method to implement the closing logic.
+
+        """
+        pass
+
+    def is_server(self) -> bool:
+        """
+        Check if the adapter is connected as a server.
+
+        :return: True if the adapter is connected as a server, False otherwise
+        """
+        return self.__is_server

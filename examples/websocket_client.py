@@ -22,12 +22,17 @@ async def send_command():
 async def handle_state(state):
     print(state)
 
+async def close_connection():
+    print("Closing connection in 3 seconds")
+    await asyncio.sleep(3)
+    print("Closing connection")
+    await adapter.close()
 
 connector_client.subscribe_to_state("temperature", handle_state)
 
 
 async def main():
-    await asyncio.gather(send_command(), adapter.connect())
+    await asyncio.gather(adapter.connect(), close_connection())
 
 
 try:
