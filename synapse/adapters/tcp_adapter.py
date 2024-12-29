@@ -14,6 +14,8 @@ class TCPAdapter(Adapter):
     ) -> None:
         super().__init__(logger)
 
+        self.__connection = None
+
         self.__host = host
         self.__port = port
 
@@ -60,6 +62,8 @@ class TCPAdapter(Adapter):
 
         try:
             reader, writer = await asyncio.open_connection(self.__host, self.__port)
+            self.__connection = writer
+
             self._update_connection_status(False, True)
 
             self._logger.info("Connected to %s:%d", self.__host, self.__port)
@@ -71,21 +75,40 @@ class TCPAdapter(Adapter):
 
         # TODO handle other exceptions
 
+    async def close(self) -> None:
+        if not self.is_connected():
+            self._logger.warning("Not connected")
+            return
+
+        if not self.is_connected():
+            self._logger.warning("Not connected")
+            return
+        
+        self.__connection.close()
+
+        if self.is_server():
+            self._update_connection_status(True, False)
+        else:
+            self._update_connection_status(False, False)
+
     async def create(self):
         if self.is_connected():
             self._log_already_connected()
             return
 
-        server = await asyncio.start_server(
+        self.__connection = await asyncio.start_server(
             self.__on_connection, self.__host, self.__port
         )
 
         self._update_connection_status(True, True)
-        addrs = ", ".join(str(sock.getsockname()) for sock in server.sockets)
+        addrs = ", ".join(str(sock.getsockname()) for sock in self.__connection.sockets)
         self._logger.info("Listening on %s", addrs)
 
-        async with server:
-            await server.serve_forever()
+        async with self.__connection:
+            try:
+                await self.__connection.serve_forever()
+            except asyncio.CancelledError:
+                self._logger.info("Server stopped")
 
     async def publish(self, topic: str, message: str) -> bool:
         if not await super().publish(topic, message):

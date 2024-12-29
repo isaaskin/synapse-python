@@ -76,14 +76,14 @@ class WSAdapter(Adapter):
             raise ConnectionError(
                 "Connection refused to %s:%d" % (self.__host, self.__port)
             )
-    
+
     async def close(self) -> None:
         if not self.is_connected():
             self._logger.warning("Not connected")
             return
 
-        if self.__connection is None:
-            self._logger.warning("Connection already closed")
+        if not self.is_connected():
+            self._logger.warning("Not connected")
             return
         
         if self.is_server():

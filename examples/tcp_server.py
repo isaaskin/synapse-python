@@ -24,8 +24,15 @@ async def handle_command_response(message: PAYLOAD):
 connector_server.register_command("hello", handle_command_response)
 
 
+async def close_connection():
+    print("Closing connection in 3 seconds")
+    await asyncio.sleep(3)
+    print("Closing connection")
+    await adapter.close()
+
+
 async def main():
-    await adapter.create()
+    await asyncio.gather(adapter.create(), close_connection())
 
 
 try:

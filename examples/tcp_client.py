@@ -18,8 +18,15 @@ async def send_command():
         asyncio.create_task(connector_client.send_command("hello", "Worldsss"))
 
 
+async def close_connection():
+    print("Closing connection in 3 seconds")
+    await asyncio.sleep(3)
+    print("Closing connection")
+    await adapter.close()
+
+
 async def main():
-    await asyncio.gather(send_command(), adapter.connect())
+    await asyncio.gather(adapter.connect(), close_connection())
 
 
 try:
