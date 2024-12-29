@@ -85,12 +85,12 @@ class WSAdapter(Adapter):
         if not self.is_connected():
             self._logger.warning("Not connected")
             return
-        
+
         if self.is_server():
             self.__connection.close()
             self._update_connection_status(True, False)
         else:
-            await self.__connection.close() # type: ignore
+            await self.__connection.close()  # type: ignore
             self._update_connection_status(False, False)
 
     async def create(self):

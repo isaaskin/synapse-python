@@ -83,7 +83,7 @@ class TCPAdapter(Adapter):
         if not self.is_connected():
             self._logger.warning("Not connected")
             return
-        
+
         self.__connection.close()
 
         if self.is_server():
