@@ -7,8 +7,8 @@ import sys
 sys.path.append("../")
 
 from synapse.adapters.ws_adapter import WSAdapter
-from synapse.connector_server import ConnectorServer
 from synapse.connector import PAYLOAD
+from synapse.connector_server import ConnectorServer
 
 adapter = WSAdapter()
 connector_server = ConnectorServer(adapter)

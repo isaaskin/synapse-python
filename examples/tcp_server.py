@@ -5,12 +5,12 @@ import sys
 
 sys.path.append("../")
 
-from synapse.adapters.tcp_adapter import TCPAdapter
-from synapse.connector_server import ConnectorServer
-from synapse.connector import PAYLOAD
-
 # Add path to synapse module
 import sys
+
+from synapse.adapters.tcp_adapter import TCPAdapter
+from synapse.connector import PAYLOAD
+from synapse.connector_server import ConnectorServer
 
 sys.path.append("../")
 

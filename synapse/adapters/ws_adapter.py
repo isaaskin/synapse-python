@@ -2,7 +2,8 @@ import asyncio
 from typing import Optional, Union
 
 import websockets
-from websockets import ConnectionClosedOK, WebSocketCommonProtocol, WebSocketServer
+from websockets import (ConnectionClosedOK, WebSocketCommonProtocol,
+                        WebSocketServer)
 from websockets.exceptions import ConnectionClosedError
 from websockets.server import serve
 

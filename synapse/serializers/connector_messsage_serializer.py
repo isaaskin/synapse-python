@@ -4,6 +4,7 @@ from typing import Tuple
 from ..connector import PAYLOAD
 from .errors import DeserializationError, SerializationError
 
+
 # TODO: Replace raising errors with returning error
 def deserialize_payload(message: str) -> PAYLOAD:
     try:

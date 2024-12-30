@@ -1,16 +1,15 @@
 import asyncio
-from threading import Thread
-import time
-from behave import given, when, then
-from behave.api.async_step import async_run_until_complete
-
 import sys
+from threading import Thread
+
+from behave import given, then, when
+from behave.api.async_step import async_run_until_complete
 
 sys.path.append("../../")
 
 from synapse.adapters.ws_adapter import WSAdapter
-from synapse.connector_server import ConnectorServer
 from synapse.connector_client import ConnectorClient
+from synapse.connector_server import ConnectorServer
 
 
 def start_loop(loop):
