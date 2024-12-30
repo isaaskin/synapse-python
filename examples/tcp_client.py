@@ -1,5 +1,4 @@
 import asyncio
-
 # Add path to synapse module
 import sys
 

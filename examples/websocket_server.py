@@ -1,6 +1,5 @@
 import asyncio
 import random
-
 # Add path to synapse module
 import sys
 
