@@ -39,6 +39,9 @@ jobs:
     - name: Test with pytest
       run: |
         poetry run pytest
+    - name: Test with behave
+      run: |
+        poetry run behave
     - name: Build with poetry
       run: |
         poetry build

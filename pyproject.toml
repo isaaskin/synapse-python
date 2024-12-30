@@ -9,6 +9,7 @@ packages = [{include = "synapse"}]
 [tool.poetry.dependencies]
 python = "^3.8"
 websockets = "^13.1"
+behave = "^1.2.6"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
