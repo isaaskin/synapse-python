@@ -1,4 +1,5 @@
 import asyncio
+from typing import Optional, Union
 
 from ..logger import Logger
 from ..serializers import adapter_message_serializer as ams
@@ -14,7 +15,7 @@ class TCPAdapter(Adapter):
     ) -> None:
         super().__init__(logger)
 
-        self.__connection = None
+        self.__connection: Optional[Union[asyncio.Server, asyncio.StreamWriter]] = None
 
         self.__host = host
         self.__port = port
@@ -80,13 +81,14 @@ class TCPAdapter(Adapter):
             self._logger.warning("Not connected")
             return
 
-        if not self.is_connected():
+        if self.is_connected() is None:
             self._logger.warning("Not connected")
             return
 
         self.__connection.close()
 
         if self.is_server():
+            self.__connection.close()
             self._update_connection_status(True, False)
         else:
             self._update_connection_status(False, False)

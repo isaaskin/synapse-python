@@ -1,7 +1,8 @@
 import asyncio
+from typing import Optional, Union
 
 import websockets
-from websockets import ConnectionClosedOK, WebSocketCommonProtocol
+from websockets import ConnectionClosedOK, WebSocketCommonProtocol, WebSocketServer
 from websockets.exceptions import ConnectionClosedError
 from websockets.server import serve
 
@@ -20,7 +21,7 @@ class WSAdapter(Adapter):
     ) -> None:
         super().__init__(logger)
 
-        self.__connection = None
+        self.__connection: Optional[Union[WebSocketCommonProtocol, WebSocketServer]] = None
 
         self.__host = host
         self.__port = port
